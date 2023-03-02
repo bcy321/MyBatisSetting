@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mybatissetting.mapper.IUserMapper">
+
+    <select id="selectUserByEmail" parameterType="java.lang.String" resultType="com.example.mybatissetting.dto.UserDto">
+        select *
+        from shoppingmall.user
+        where userEmail = #{userEmail}
+    </select>
+
+    <select id="selectUserList" parameterType="java.lang.String" resultType="com.example.mybatissetting.dto.UserDto">
+        select *
+        from shoppingmall.user
+    </select>
+
+    <insert id="register" parameterType="com.example.mybatissetting.dto.UserDto">
+        insert into shoppingmall.user(userEmail, userAge, userGrade, userPassword)
+        values (
+                #{user.userEmail},
+                #{user.userAge},
+                #{user.userGrade},
+                #{user.userPassword})
+    </insert>
+
+
+    <update id="modify" parameterType="com.example.mybatissetting.dto.UserDto">
+        update shoppingmall.user set
+                         userPassword = #{user.userPassword},
+                         userEmail = #{user.userEmail},
+                         userGrade = #{user.userGrade},
+                         userAge = #{user.userAge}
+        where userId = #{user.userId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from shoppingmall.user
+        where userId = #{userId}
+    </delete>
+
+</mapper>

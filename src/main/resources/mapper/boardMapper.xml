@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mybatissetting.mapper.IBoardMapper">
+
+    <select id="selectByUserEmail" parameterType="java.lang.String" resultType="com.example.mybatissetting.dto.BoardDto">
+        select *
+        from shoppingmall.board
+        where boardTitle = #{userEmail};
+    </select>
+
+    <select id="selectByBoardTitle" parameterType="java.lang.String" resultType="com.example.mybatissetting.dto.BoardDto">
+        select *
+        from shoppingmall.board
+        where boardTitle like CONCAT('%', #{title}, '%');
+    </select>
+
+    <select id="selectBoardListDto"  resultType="com.example.mybatissetting.dto.BoardDto">
+        select *
+        from shoppingmall.board
+        LIMIT #{page},#{size};
+    </select>
+
+    <select id="selectBoardById" parameterType="java.lang.Integer" resultType="com.example.mybatissetting.dto.BoardDto">
+        select *
+        from shoppingmall.board
+                 left join shoppingmall.user
+                           on board.boardWriter=user.userEmail
+        where boardId = #{boardId};
+    </select>
+
+
+    <insert id="write" parameterType="com.example.mybatissetting.dto.BoardDto">
+        insert into shoppingmall.board(boardTitle, boardContent, boardViewsCount, boardWriter)
+        values (
+                #{board.boardTitle},
+                #{board.boardContent},
+                #{board.boardViewsCount},
+                #{board.boardWriter})
+    </insert>
+
+
+    <update id="update" parameterType="com.example.mybatissetting.dto.BoardDto">
+        update shoppingmall.board set
+                                      boardTitle = #{board.boardTitle},
+                                      boardContent = #{board.boardContent},
+                                      boardViewsCount = #{board.boardViewsCount},
+                                      boardWriter = #{board.boardWriter}
+        where boardId = #{board.boardId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from shoppingmall.board
+        where boardId = #{boardId}
+    </delete>
+
+</mapper>
